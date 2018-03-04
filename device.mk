@@ -126,6 +126,10 @@ PRODUCT_COPY_FILES += \
 # Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package
 
+# Fingerprint feature
+PRODUCT_PACKAGES += \
+    fingerprintd \
+    android.hardware.biometrics.fingerprint@2.1-service.xiaomi_sdm660
 
 # FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
