@@ -115,29 +115,7 @@ $(shell  mkdir -p $(TARGET_OUT_VENDOR)/firmware; \
 	$(TARGET_OUT_VENDOR)/firmware/msadp)
 
 #----------------------------------------------------------------------
-# Radio image
-#----------------------------------------------------------------------
-ifeq ($(ADD_RADIO_FILES), true)
-radio_dir := $(LOCAL_PATH)/radio
-RADIO_FILES := $(shell cd $(radio_dir) ; ls)
-$(foreach f, $(RADIO_FILES), \
-	$(call add-radio-file,radio/$(f)))
-endif
-
-#----------------------------------------------------------------------
-# wlan specific
-#----------------------------------------------------------------------
-ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-include device/qcom/wlan/sdm660_64/AndroidBoardWlan.mk
-
-endif
-#----------------------------------------------------------------------
-# Configs common to AndroidBoard.mk for all targets
-#----------------------------------------------------------------------
-include vendor/qcom/opensource/core-utils/build/AndroidBoardCommon.mk
-
-#----------------------------------------------------------------------
-# override default make with prebuilt make path (if any)
+# extra images
 #----------------------------------------------------------------------
 ifneq (, $(wildcard $(shell pwd)/prebuilts/build-tools/linux-x86/bin/make))
     MAKE := $(shell pwd)/prebuilts/build-tools/linux-x86/bin/$(MAKE)
