@@ -231,6 +231,10 @@ PRODUCT_PACKAGES += \
     libOmxVenc \
     libstagefrighthw
 
+# QMI
+PRODUCT_PACKAGES += \
+    libjson
+
 # Video codec configuration files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
