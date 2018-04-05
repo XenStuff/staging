@@ -206,6 +206,15 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
+# RIL
+PRODUCT_PACKAGES += \
+    android.hardware.radio@1.2 \
+    android.hardware.radio.config@1.0 \
+    android.hardware.secure_element@1.0 \
+    librmnetctl \
+    libxml2 \
+    libprotobuf-cpp-full
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     exfat.rc \
