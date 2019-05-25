@@ -86,8 +86,6 @@ start_msm_irqbalance_8939()
 		case "$platformid" in
 		    "239" | "293" | "294" | "295" | "304" | "338" | "313" | "353" | "354")
 			start vendor.msm_irqbalance;;
-		    "349" | "350" )
-			start vendor.msm_irqbal_lb;;
 		esac
 	fi
 }
@@ -126,8 +124,6 @@ start_msm_irqbalance660()
 		case "$platformid" in
 		    "317" | "321" | "324" | "325" | "326" | "336" | "345" | "346" | "360" | "393")
 			start vendor.msm_irqbalance;;
-		    "318" | "327" | "385")
-			start vendor.msm_irqbl_sdm630;;
 		esac
 	fi
 }
