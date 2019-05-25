@@ -176,9 +176,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.ims.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.ims.xml
 
-# For android_filesystem_config.h
+# QCOM
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:system/etc/permissions/privapp-permissions-qti.xml \
+    $(LOCAL_PATH)/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
+
+# Vibrator
 PRODUCT_PACKAGES += \
-    fs_config_files
+     fs_config_files
 
 # FBE support
 PRODUCT_COPY_FILES += \
