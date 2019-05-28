@@ -238,6 +238,7 @@ persist.vendor.camera.awb.sync=2
 #add for color invert
 ro.vendor.df.effect.conflict=1
 persist.sys.df.extcolor.proc=0
+
 #paper mode
 sys.paper_mode_max_level=255
 sys.tianma_nt36672a_offset=6
@@ -247,18 +248,8 @@ sys.boe_td4320_length=42
 sys.shenchao_nt36672a_offset=-10
 sys.shenchao_nt36672a_length=38
 
-#enable temp dds
-persist.vendor.radio.enable_temp_dds=true
-
-# enable b-services aging propagation
-ro.vendor.qti.sys.fw.bservice_enable=true
-
 #thermal configs path
-sys.thermal.data.path=/data/thermal/
-
-#enable all system restart_level to relative
-persist.vendor.ssr.restart_level=ALL_ENABLE
-
+sys.thermal.data.path=/data/vendor/thermal/
 
 #enable bg dexopt
 persist.bg.dexopt.enable=true
