@@ -1,144 +1,19 @@
-ALLOW_MISSING_DEPENDENCIES := true
-TARGET_USES_AOSP := true
-# Default vendor configuration.
-ifeq ($(ENABLE_VENDOR_IMAGE),)
-ENABLE_VENDOR_IMAGE := true
-endif
+# Get non-open-source specific aspects
+$(call inherit-product, vendor/xiaomi/lavender/lavender-vendor.mk)
 
-# Default A/B configuration.
-ENABLE_AB ?= true
-
-# Disable QTIC until it's brought up in split system/vendor
-# configuration to avoid compilation breakage.
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-#TARGET_USES_QTIC := false
-endif
-
-TARGET_USES_AOSP_FOR_AUDIO := false
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-TARGET_DISABLE_DASH := true
-
-ifneq ($(wildcard kernel/msm-4.19),)
-    TARGET_KERNEL_VERSION := 4.19
-    $(warning "Build with 4.19 kernel.")
-else ifneq ($(wildcard kernel/msm-4.4),)
-    TARGET_KERNEL_VERSION := 4.4
-    $(warning "Build with 4.4 kernel.")
-else
-    $(warning "Unknown kernel")
-endif
-
-# Enable RRO for Android R
-ifeq ($(strip $(TARGET_KERNEL_VERSION)), 4.19)
-    TARGET_USES_RRO := true
-endif
-
-ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
-  SHIPPING_API_LEVEL :=30
-  ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
-    # Dynamic-partition enabled by default for new launch config
-    BOARD_DYNAMIC_PARTITION_ENABLE := true
-    # First launch API level
-    PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
-    # Enable virtual-ab by default
-    ENABLE_VIRTUAL_AB := true
-    # Enable incremental FS feature
-    PRODUCT_PROPERTY_OVERRIDES += ro.incremental.enable=1
-  else
-    BOARD_DYNAMIC_PARTITION_ENABLE := false
-    $(call inherit-product, build/make/target/product/product_launched_with_p.mk)
-  endif
-else
-  SHIPPING_API_LEVEL :=28
-  BOARD_DYNAMIC_PARTITION_ENABLE := false
-  $(call inherit-product, build/make/target/product/product_launched_with_p.mk)
-endif
-
-ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
- # f2fs utilities
- PRODUCT_PACKAGES += \
-     sg_write_buffer \
-     f2fs_io \
-     check_f2fs
-
- # Userdata checkpoint
- PRODUCT_PACKAGES += \
-     checkpoint_gc
-
- ifeq ($(ENABLE_AB), true)
- AB_OTA_POSTINSTALL_CONFIG += \
-     RUN_POSTINSTALL_vendor=true \
-     POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
-     FILESYSTEM_TYPE_vendor=ext4 \
-     POSTINSTALL_OPTIONAL_vendor=true
- endif
-endif
-
-# Include mainline components
-ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
-  PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := true
-endif
-
-# New launch config
-ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-PRODUCT_PACKAGES += fastbootd
-# Add default implementation of fastboot HAL.
-PRODUCT_PACKAGES += android.hardware.fastboot@1.0-impl-mock
-ifeq ($(ENABLE_AB), true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/default/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.default
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/emmc/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.emmc
-else
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/default/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.default
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/emmc/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.emmc
-endif
-
-BOARD_AVB_ENABLE := true
-
-# Enable product partition
-PRODUCT_BUILD_PRODUCT_IMAGE := true
-# Enable System_ext
-PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
-# Enable vbmeta_system
-BOARD_AVB_VBMETA_SYSTEM := system product system_ext
-BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
-$(call inherit-product, build/make/target/product/gsi_keys.mk)
-endif
-# End New launch config
+# Boot animation
+TARGET_SCREEN_HEIGHT := 2340
+TARGET_SCREEN_WIDTH := 1080
 
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
-DEVICE_PACKAGE_OVERLAYS := $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += \
+       $(LOCAL_PATH)/overlay
 
-# Disable QTIC until it's brought up in split system/vendor
-# configuration to avoid compilation breakage.
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-#TARGET_USES_QTIC := false
-endif
-
-ifeq ($(ENABLE_VIRTUAL_AB), true)
-    $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
-endif
-
+# Audio
 TARGET_USES_AOSP_FOR_AUDIO := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 TARGET_DISABLE_DASH := true
-
-ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
-#Enable llvm support for kernel
-KERNEL_LLVM_SUPPORT := true
-
-#Enable sd-llvm support for kernel
-KERNEL_SD_LLVM_SUPPORT := true
-
-#Enable libion support
-LIBION_PATH_INCLUDES := true
-endif
-
-BOARD_FRP_PARTITION_NAME := frp
 
 # enable the SVA in UI area
 TARGET_USE_UI_SVA := true
@@ -175,21 +50,10 @@ ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
 endif
 
-# split init.target.rc to support OTA and new launch targets
-ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
-PRODUCT_PACKAGES += \
-    init.target_dap.rc
-else
-PRODUCT_PACKAGES += \
-    init.target_ota.rc
-endif
-
-ifeq (false,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.0-service \
     android.hardware.power@1.0-impl
-endif
 
 # privapp-permissions whitelisting
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
@@ -205,23 +69,9 @@ PRODUCT_DEVICE := sdm660_64
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := sdm660 for arm64
 
-# default is nosdcard, S/W button enabled in resource
-PRODUCT_CHARACTERISTICS := nosdcard
-
-# When can normal compile this module,  need module owner enable below commands
-# font rendering engine feature switch
-#-include $(QCPATH)/common/config/rendering-engine.mk
-#ifneq (,$(strip $(wildcard $(PRODUCT_RENDERING_ENGINE_REVLIB))))
-#    MULTI_LANG_ENGINE := REVERIE
-#    MULTI_LANG_ZAWGYI := REVERIE
-#endif
-
 # Enable features in video HAL that can compile only on this platform
 TARGET_USES_MEDIA_EXTENSIONS := true
 
-#
-# system prop for opengles version
-#
 # 196610 is decimal for 0x30002 to report major/minor versions as 3/2
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196610
@@ -420,30 +270,12 @@ else
         ro.logdumpd.enabled=0
 endif
 
-ifeq ($(ENABLE_AB), true)
-#A/B related packages
-PRODUCT_PACKAGES += update_engine \
-                    update_engine_client \
-                    update_verifier \
-                    android.hardware.boot@1.1-impl-qti \
-                    android.hardware.boot@1.1-impl-qti.recovery \
-                    android.hardware.boot@1.1-service
-
-PRODUCT_HOST_PACKAGES += \
-  brillo_update_payload
-
-#Boot control HAL test app
-PRODUCT_PACKAGES_DEBUG += bootctl
-
-PRODUCT_PACKAGES += \
-  update_engine_sideload
-endif
-
 #Healthd packages
-PRODUCT_PACKAGES += android.hardware.health@2.1-impl \
-                    android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl.recovery \
-                    libhealthd.msm
+PRODUCT_PACKAGES += \
+        android.hardware.health@2.1-impl \
+        android.hardware.health@2.1-service \
+        android.hardware.health@2.1-impl.recovery \
+        libhealthd.msm
 
 #FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
@@ -516,19 +348,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.volume.metadata.method=dm-default-key \
     ro.crypto.allow_encrypt_override = true
 
-ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
-PRODUCT_PACKAGES += init.qti.dcvs.sh
-endif
-
 PRODUCT_PACKAGES += libnbaio
 
 # Target specific Netflix custom property
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.netflix.bsp_rev=Q660-13149-1
-
-###################################################################################
-# This is the End of target.mk file.
-# Now, Pickup other split product.mk files:
-###################################################################################
-$(call inherit-product-if-exists, vendor/qcom/defs/product-defs/legacy/*.mk)
-###################################################################################
