@@ -170,6 +170,19 @@ PRODUCT_PACKAGES += \
         android.hardware.health@2.1-impl.recovery \
         libhealthd.msm
 
+
+# GPS
+PRODUCT_COPY_FILES += \
+    android.hardware.gnss@1.0-impl-qti \
+    android.hardware.gnss@1.0-service-qti \
+    libgnss \
+    libgnsspps \
+    libsensorndkbridge \
+    libvehiclenetwork-native
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/gps/etc/gps.conf:$(TARGET_COPY_OUT_VENDOR)/etc/gps.conf
+
 # IRQ
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
