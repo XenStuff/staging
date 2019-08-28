@@ -187,6 +187,10 @@ PRODUCT_PACKAGES += \
 # Privapp-permissions whitelisting
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
+# Public Libraries
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     exfat.rc \
