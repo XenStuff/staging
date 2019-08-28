@@ -35,6 +35,9 @@ TARGET_NO_BOOTLOADER := true
 # Assert
 TARGET_OTA_ASSERT_DEVICE := lavender
 
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-uart"
+
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 USE_CUSTOM_AUDIO_POLICY := 1

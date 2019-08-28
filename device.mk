@@ -110,9 +110,22 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
 
-#audio related module
+# ANT+
 PRODUCT_PACKAGES += \
-    libvolumelistener
+    AntHalService \
+    com.dsi.ant.antradio_library
+
+PRODUCT_COPY_FILES += \
+    external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.dsi.ant.antradio_library.xml
+
+# WLAN driver configuration file
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini
+
+PRODUCT_PACKAGES += \
+    wpa_supplicant_overlay.conf \
+    p2p_supplicant_overlay.conf
+
 
 #Display/Graphics
 ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
