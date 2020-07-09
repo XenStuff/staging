@@ -102,7 +102,11 @@ else
   BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
   # Define the Dynamic Partition sizes and groups.
   ifeq ($(ENABLE_AB), true)
-    BOARD_SUPER_PARTITION_SIZE := 12884901888
+     ifeq ($(ENABLE_VIRTUAL_AB), true)
+        BOARD_SUPER_PARTITION_SIZE := 6442450944
+     else
+        BOARD_SUPER_PARTITION_SIZE := 12884901888
+     endif
   else
     BOARD_SUPER_PARTITION_SIZE := 5318967296
   endif
