@@ -44,6 +44,10 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
 
 TARGET_KERNEL_APPEND_DTB := false
 
+# depmod_vendor_intermidiates remove
+# signed ko file is not copied to correct path
+BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
+
 ifeq ($(ENABLE_AB), true)
 #A/B related defines
 AB_OTA_UPDATER := true
