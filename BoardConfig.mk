@@ -42,7 +42,13 @@ BOARD_USE_LEGACY_UI := true
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
 
-TARGET_KERNEL_APPEND_DTB := false
+
+# TARGET_KERNEL_APPEND_DTB handling
+ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
+    TARGET_KERNEL_APPEND_DTB := false
+else
+    TARGET_KERNEL_APPEND_DTB := true
+endif
 
 ifeq ($(ENABLE_AB), true)
 #A/B related defines
@@ -172,7 +178,6 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
     $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
-    $(KERNEL_MODULES_OUT)/qca_cld3_wlan.ko \
     $(KERNEL_MODULES_OUT)/rdbg.ko \
     $(KERNEL_MODULES_OUT)/mpq-adapter.ko \
     $(KERNEL_MODULES_OUT)/mpq-dmx-hw-plugin.ko
@@ -224,7 +229,7 @@ ifneq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),3.18 4.9))
 else
      BOARD_KERNEL_CMDLINE += console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 earlycon=msm_hsl_uart,0xc1b0000
 endif
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 loop.max_part=7 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 loop.max_part=7
 endif
 
 BOARD_EGL_CFG := device/qcom/sdm660_64/egl.cfg
@@ -262,7 +267,11 @@ TARGET_COMPILE_WITH_MSM_KERNEL := true
 TARGET_PD_SERVICE_ENABLED := true
 
 #Enable HW based full disk encryption
+ifeq ($(TARGET_KERNEL_VERSION), 4.4)
+TARGET_HW_DISK_ENCRYPTION := false
+else
 TARGET_HW_DISK_ENCRYPTION := true
+endif
 
 ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
 TARGET_HW_DISK_ENCRYPTION_PERF := true
