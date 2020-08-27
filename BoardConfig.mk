@@ -206,6 +206,7 @@ BOARD_VENDOR_KERNEL_MODULES += \
     $(KERNEL_MODULES_OUT)/audio_wcd9xxx.ko \
     $(KERNEL_MODULES_OUT)/audio_mbhc.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd9335.ko \
+    $(KERNEL_MODULES_OUT)/audio_wcd_spi.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd934x.ko \
     $(KERNEL_MODULES_OUT)/audio_digital_cdc.ko \
     $(KERNEL_MODULES_OUT)/audio_analog_cdc.ko \
