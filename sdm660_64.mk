@@ -218,17 +218,11 @@ PRODUCT_BOOT_JARS += telephony-ext
 
 PRODUCT_PACKAGES += telephony-ext
 
-PREBUILT_HY22_STATS_PATH   := $(TOP)/vendor/qcom/proprietary/prebuilt_HY22
-HAS_PREBUILT_PATH := false
-HAS_PREBUILT_PATH := $(shell if [[ -d $(PREBUILT_HY22_STATS_PATH) ]] ; then echo true; fi)
-
-ifneq ($(strip $(QCPATH)),)
-ifneq ($(HAS_PREBUILT_PATH),true)
-PRODUCT_BOOT_JARS += WfdCommon
+#ifneq ($(strip $(QCPATH)),)
+#PRODUCT_BOOT_JARS += WfdCommon
 #Android oem shutdown hook
 #PRODUCT_BOOT_JARS += oem-services
-endif
-endif
+#endif
 
 DEVICE_MANIFEST_FILE := device/qcom/sdm660_64/manifest.xml
 ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
