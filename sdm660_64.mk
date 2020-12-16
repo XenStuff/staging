@@ -34,7 +34,7 @@ ifeq ($(strip $(TARGET_KERNEL_VERSION)), 4.19)
 endif
 
 ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
-  SHIPPING_API_LEVEL :=30
+  SHIPPING_API_LEVEL :=29
   ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
     # Dynamic-partition enabled by default for new launch config
     BOARD_DYNAMIC_PARTITION_ENABLE := true
