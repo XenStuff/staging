@@ -54,6 +54,26 @@ else
   $(call inherit-product, build/make/target/product/product_launched_with_p.mk)
 endif
 
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
+ # f2fs utilities
+ PRODUCT_PACKAGES += \
+     sg_write_buffer \
+     f2fs_io \
+     check_f2fs
+
+ # Userdata checkpoint
+ PRODUCT_PACKAGES += \
+     checkpoint_gc
+
+ ifeq ($(ENABLE_AB), true)
+ AB_OTA_POSTINSTALL_CONFIG += \
+     RUN_POSTINSTALL_vendor=true \
+     POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+     FILESYSTEM_TYPE_vendor=ext4 \
+     POSTINSTALL_OPTIONAL_vendor=true
+ endif
+endif
+
 # Include mainline components
 ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
   PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := true
@@ -285,11 +305,21 @@ PRODUCT_PACKAGES += \
 ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
 #Enable Light AIDL HAL
 PRODUCT_PACKAGES += android.hardware.lights-service.qti
+#Display/Graphics
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.display.allocator-service \
+    android.hardware.graphics.mapper@3.0-impl-qti-display \
+    android.hardware.graphics.mapper@4.0-impl-qti-display
 else
 #Enable Light HIDL HAL
 PRODUCT_PACKAGES += \
 android.hardware.light@2.0-impl \
 android.hardware.light@2.0-service
+#Display/Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.mapper@2.0-impl-2.1
 endif
 
 PRODUCT_PACKAGES += \
@@ -482,6 +512,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.14 4.19))
 PRODUCT_PACKAGES += init.qti.dcvs.sh
 endif
+
+PRODUCT_PACKAGES += libnbaio
+
+# Target specific Netflix custom property
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.netflix.bsp_rev=Q660-13149-1
 
 ###################################################################################
 # This is the End of target.mk file.
