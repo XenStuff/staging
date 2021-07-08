@@ -184,11 +184,6 @@ endif
 # Enable suspend during charger mode
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-#Disable widevine for target sdm660 and kernel 4.19
-ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.19))
-TARGET_WV_SERVICE_DISABLE := true
-endif
-
 BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
     $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
