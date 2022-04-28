@@ -3,10 +3,11 @@
 # Product-specific compile-time definitions.
 #
 
-BUILD_BROKEN_DUP_RULES := true
+DEVICE_PATH := device/xiaomi/lavender
 
+# Broken Flags
+BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_PREBUILT_ELF_FILES := true
-include device/qcom/sepolicy/SEPolicy.mk
 BUILD_BROKEN_NINJA_USES_ENV_VARS := SDCLANG_AE_CONFIG SDCLANG_CONFIG SDCLANG_SA_ENABLED SDCLANG_CONFIG_AOSP
 BUILD_BROKEN_NINJA_USES_ENV_VARS += TEMPORARY_DISABLE_PATH_RESTRICTIONS
 BUILD_BROKEN_USES_BUILD_HOST_SHARED_LIBRARY := true
@@ -14,10 +15,7 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
 
-TARGET_BOARD_PLATFORM := sdm660
-TARGET_BOARD_SUFFIX := _64
-TARGET_BOOTLOADER_BOARD_NAME :=sdm660
-
+# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -30,6 +28,13 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a73
 
+# Assert
+TARGET_OTA_ASSERT_DEVICE := lavender
+
+# Architecture
+TARGET_BOARD_PLATFORM := sdm660
+TARGET_BOARD_SUFFIX := _64
+TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := false
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
@@ -149,22 +154,22 @@ endif
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
   ifeq ($(ENABLE_AB), true)
     ifeq ($(ENABLE_VENDOR_IMAGE), true)
-      TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_AB_split_variant.fstab
+      TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_AB_split_variant.fstab
     else
-      TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_AB_non-split_variant.fstab
+      TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_AB_non-split_variant.fstab
     endif
   else
     ifeq ($(ENABLE_VENDOR_IMAGE), true)
-      TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_non-AB_split_variant.fstab
+      TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_non-AB_split_variant.fstab
     else
-      TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_non-AB_non-split_variant.fstab
+      TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_non-AB_non-split_variant.fstab
     endif
   endif
 else
   ifeq ($(ENABLE_AB), true)
-    TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_AB_dynamic_variant.fstab
+    TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_AB_dynamic_variant.fstab
   else
-    TARGET_RECOVERY_FSTAB := device/qcom/sdm660_64/recovery_non-AB_dynamic_variant.fstab
+    TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery_non-AB_dynamic_variant.fstab
   endif
 endif
 
@@ -253,8 +258,8 @@ ifeq ($(TARGET_KERNEL_VERSION),$(filter $(TARGET_KERNEL_VERSION),4.4))
 endif
 endif
 
-BOARD_EGL_CFG := device/qcom/sdm660_64/egl.cfg
-BOARD_SECCOMP_POLICY := device/qcom/sdm660_64/seccomp
+BOARD_EGL_CFG := $(DEVICE_PATH)/egl.cfg
+BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
 
 BOARD_KERNEL_BASE        := 0x00000000
 BOARD_KERNEL_PAGESIZE    := 4096
