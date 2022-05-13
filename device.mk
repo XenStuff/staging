@@ -1,4 +1,4 @@
-# Get non-open-source specific aspects
+ # Get non-open-source specific aspects
 $(call inherit-product, vendor/xiaomi/lavender/lavender-vendor.mk)
 
 # Boot animation
@@ -7,8 +7,13 @@ TARGET_SCREEN_WIDTH := 1080
 
 TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
+# Overlays
 DEVICE_PACKAGE_OVERLAYS += \
        $(LOCAL_PATH)/overlay
+
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Video codec configuration files
 PRODUCT_COPY_FILES += \
