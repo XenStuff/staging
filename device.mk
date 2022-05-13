@@ -133,44 +133,43 @@ PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf
 
 
-#Display/Graphics
-ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
+# Display
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator-service \
     android.hardware.graphics.mapper@3.0-impl-qti-display \
     android.hardware.graphics.mapper@4.0-impl-qti-display
-else
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator@2.0-impl \
-    android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.mapper@2.0-impl-2.1
-endif
+
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.composer@2.1-service \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
-    android.hardware.broadcastradio@1.0-impl
+    copybit.sdm660 \
+    gralloc.sdm660 \
+    hwcomposer.sdm660 \
+    libdisplayconfig \
+    libqdMetaData.system \
+    liboverlay \
+    libtinyxml \
+    memtrack.sdm660
 
-ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
-#Enable Light AIDL HAL
-PRODUCT_PACKAGES += android.hardware.lights-service.qti
-#Display/Graphics
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator-service \
     android.hardware.graphics.mapper@3.0-impl-qti-display \
     android.hardware.graphics.mapper@4.0-impl-qti-display
-else
-#Enable Light HIDL HAL
+
+PRODUCT_PACKAGES += android.hardware.lights-service.qti
+
+# Enable Light HIDL HAL
 PRODUCT_PACKAGES += \
 android.hardware.light@2.0-impl \
 android.hardware.light@2.0-service
-#Display/Graphics
+
+# Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.mapper@2.0-impl-2.1
-endif
 
 PRODUCT_PACKAGES += \
     vendor.display.color@1.0-service \
@@ -180,6 +179,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += camera.device@3.2-impl
 PRODUCT_PACKAGES += camera.device@1.0-impl
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+
 # Enable binderized camera HAL
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
 
@@ -218,14 +218,6 @@ PRODUCT_COPY_FILES += \
 # High performance VR feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.vr.high_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vr.high_performance.xml
-
-# SF properties
-ifeq ($(call math_gt,$(SHIPPING_API_LEVEL),29),true)
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.surface_flinger.force_hwc_copy_for_virtual_displays=true \
-    ro.surface_flinger.max_frame_buffer_acquired_buffers=3 \
-    ro.surface_flinger.max_virtual_display_dimension=4096
-endif
 
 # FBE support
 PRODUCT_COPY_FILES += \
