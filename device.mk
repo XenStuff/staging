@@ -126,17 +126,6 @@ PRODUCT_COPY_FILES += \
 # Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package
 
-# Facing, CMC and Gesture
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.sensors.facing=false \
-    ro.vendor.sensors.cmc=false \
-    ro.vendor.sdk.sensors.gestures=false
-
-# Facing, CMC and Gesture
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.sensors.facing=false \
-    ro.vendor.sensors.cmc=false \
-    ro.vendor.sdk.sensors.gestures=false
 
 # FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
@@ -263,6 +252,16 @@ PRODUCT_BOOT_JARS += telephony-ext
 USE_LIB_PROCESS_GROUP := true
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
+
+# Sensors
+PRODUCT_PACKAGES += \
+    android.hardware.sensors@1.0-impl \
+    android.hardware.sensors@1.0-service
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.sensors.facing=false \
+    ro.vendor.sensors.cmc=false \
+    ro.vendor.sdk.sensors.gestures=false
 
 # Sensor HAL conf file
 PRODUCT_COPY_FILES += \
