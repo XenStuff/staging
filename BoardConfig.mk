@@ -172,9 +172,6 @@ TARGET_POWERHAL_VARIANT := qcom
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
-# Seccomp
-BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
-
 # Sensors
 USE_SENSOR_MULTI_HAL := true
 
