@@ -196,7 +196,8 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.0-service \
-     android.hardware.power@1.0-impl
+    android.hardware.power@1.0-impl \
+    android.hardware.power@1.1-service-qti
 
 # Privapp-permissions whitelisting
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
