@@ -132,3 +132,6 @@ USE_SENSOR_MULTI_HAL := true
 #Enable CPUSets
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
+
+# inherit from the proprietary version
+-include vendor/xiaomi/lavender/BoardConfigVendor.mk
