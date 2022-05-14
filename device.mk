@@ -53,10 +53,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.dsi.ant.antradio_library.xml
 
-# Camera configuration file. Shared by passthrough/binderized camera HAL
+# Camera
 PRODUCT_PACKAGES += \
-    camera.device@3.2-impl \
-    camera.device@1.0-impl \
+    android.frameworks.displayservice@1.0 \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service
 
