@@ -142,6 +142,7 @@ TARGET_SUPPORT_SOTER := true
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
 
+# USB
  PRODUCT_PACKAGES += \
 	android.hardware.usb@1.0-service
 
