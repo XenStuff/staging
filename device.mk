@@ -280,6 +280,12 @@ USE_LIB_PROCESS_GROUP := true
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
+# Thermal
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.0-impl \
+    android.hardware.thermal@1.0-service \
+    thermal.sdm660
+
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
