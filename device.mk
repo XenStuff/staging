@@ -207,10 +207,6 @@ PRODUCT_PACKAGES += \
 # MIDI feature
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 
-PRODUCT_FULL_TREBLE_OVERRIDE := true
-
-PRODUCT_VENDOR_MOVE_ENABLED := true
-
 #for android_filesystem_config.h
 PRODUCT_PACKAGES += \
     fs_config_files
