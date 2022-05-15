@@ -32,6 +32,19 @@ TARGET_2ND_CPU_VARIANT := cortex-a73
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
 
+# Kernel
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 serv>
+BOARD_KERNEL_BASE        := 0x00000000
+BOARD_KERNEL_PAGESIZE    := 4096
+BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_DTBOIMG_PARTITION_SIZE := 8388608
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+TARGET_KERNEL_SOURCE := kernel/xiaomi/lavender
+TARGET_KERNEL_CONFIG := lavender-perf_defconfig
+TARGET_KERNEL_CLANG_COMPILE := true
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_COMPILE_WITH_MSM_KERNEL := true
+
 # Assert
 TARGET_OTA_ASSERT_DEVICE := lavender
 
@@ -88,19 +101,6 @@ QCOM_BT_USE_BTNV := true
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true
-
-# Kernel
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 service_locator.enable=1 swiotlb=1 loop.max_part=7
-BOARD_KERNEL_BASE        := 0x00000000
-BOARD_KERNEL_PAGESIZE    := 4096
-BOARD_KERNEL_SEPARATED_DTBO := true
-BOARD_DTBOIMG_PARTITION_SIZE := 8388608
-BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-TARGET_KERNEL_SOURCE := kernel/xiaomi/lavender
-TARGET_KERNEL_CONFIG := lavender-perf_defconfig
-TARGET_KERNEL_CLANG_COMPILE := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-TARGET_COMPILE_WITH_MSM_KERNEL := true
 
 # Enable dex pre-opt to speed up initial boot
 ifeq ($(HOST_OS),linux)

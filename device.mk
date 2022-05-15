@@ -147,29 +147,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
 
-# Soter
-TARGET_SUPPORT_SOTER := true
-
 # FBE support
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/bin/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
 
-# USB
- PRODUCT_PACKAGES += \
-	android.hardware.usb@1.0-service
-
 # Gatekeeper HAL
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
-    android.hardware.gatekeeper@1.0-service
-
-# Healthd packages
-PRODUCT_PACKAGES += \
-        android.hardware.health@2.1-impl \
-        android.hardware.health@2.1-service \
-        android.hardware.health@2.1-impl.recovery \
-        libhealthd.msm
-
+    android.hardware.gatekeeper@1.0-service \
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -189,6 +174,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps/sap.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sap.conf \
     $(LOCAL_PATH)/configs/gps/xtwifi.conf:$(TARGET_COPY_OUT_VENDOR)/etc/xtwifi.conf
 
+# Healthd packages
+PRODUCT_PACKAGES += \
+        android.hardware.health@2.1-impl \
+        android.hardware.health@2.1-service \
+        android.hardware.health@2.1-impl.recovery \
+        libhealthd.msm
 
 # IRQ
 PRODUCT_COPY_FILES += \
@@ -207,15 +198,28 @@ PRODUCT_PACKAGES += \
 # MIDI feature
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 
-#for android_filesystem_config.h
-PRODUCT_PACKAGES += \
-    fs_config_files
-
 # Override heap growth limit due to high display density on device
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=256m
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 
+# OMX
+PRODUCT_PACKAGES += \
+    libc2dcolorconvert \
+    libmm-omxcore \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxCore \
+    libOmxEvrcEnc \
+    libOmxG711Enc \
+    libOmxQcelp13Enc \
+    libOmxVdec \
+    libOmxVenc \
+    libstagefrighthw
+
+# QMI
+PRODUCT_PACKAGES += \
+    libjson
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.0-service \
@@ -249,23 +253,12 @@ PRODUCT_PACKAGES += \
     fstab.qcom \
     ueventd.qcom.rc
 
-# OMX
-PRODUCT_PACKAGES += \
-    libc2dcolorconvert \
-    libmm-omxcore \
-    libOmxAacEnc \
-    libOmxAmrEnc \
-    libOmxCore \
-    libOmxEvrcEnc \
-    libOmxG711Enc \
-    libOmxQcelp13Enc \
-    libOmxVdec \
-    libOmxVenc \
-    libstagefrighthw
+# USB
+ PRODUCT_PACKAGES += \
+	android.hardware.usb@1.0-service
 
-# QMI
-PRODUCT_PACKAGES += \
-    libjson
+# Soter
+TARGET_SUPPORT_SOTER := true
 
 # Video codec configuration files
 PRODUCT_COPY_FILES += \
@@ -320,7 +313,7 @@ PRODUCT_PACKAGES += \
 
 # VNDK
 PRODUCT_PACKAGES += \
-	libstdc++.vendor \
+    libstdc++.vendor \
     vndk-ext \
     vndk_package
 
